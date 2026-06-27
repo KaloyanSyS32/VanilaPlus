@@ -1,0 +1,18 @@
+{
+    "1.21.11": {
+        "mrpack": "builds/1.21.11.mrpack",
+        "description": "Engineered for maximum optimization on the stable 1.21.11 lifecycle. Features updated Sodium memory limits, fast network socket profiling, and smooth frame times."
+    },
+    "1.21": {
+        "mrpack": "builds/1.21.mrpack",
+        "description": "Optimized for the latest game features. Includes full Distant Horizons chunk caching and the complete modern rendering engine framework."
+    },
+    "1.20.4": {
+        "mrpack": "builds/1.20.4.mrpack",
+        "description": "The baseline for long-term server infrastructure. Excellent performance tuning with highly stable engine hooks and minimal overhead."
+    },
+    "1.19.2": {
+        "mrpack": "builds/1.19.2.mrpack",
+        "description": "The classic optimization profile. Tailored for maximum retro-hardware compatibility and legacy runtime stability."
+    }
+}

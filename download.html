@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download - Vanilla+ Modpack</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2316161f' stroke='%2322222e' stroke-width='2'/%3E%3Cpath d='M16 8 L24 22 L8 22 Z' fill='%233b82f6'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23ffffff'/%3E%3C/svg%3E">
+
+    <style>
+        :root {
+            --bg-primary: #0d0d11;
+            --bg-secondary: #16161f;
+            --border-color: #22222e;
+            --text-primary: #ffffff;
+            --text-secondary: #9494a8;
+            --accent: #10b981; /* Modrinth Emerald */
+            --accent-glow: rgba(16, 185, 129, 0.08);
+            --accent-hover: #059669;
+            --card-bg: #111116;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-container {
+            max-width: 840px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        header {
+            margin-bottom: 3rem;
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover { color: var(--text-primary); }
+        .back-link svg { width: 16px; height: 16px; fill: currentColor; }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle { font-size: 1.05rem; color: var(--text-secondary); }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+        }
+
+        @media (min-width: 768px) {
+            .layout-grid { grid-template-columns: 300px 1fr; }
+        }
+
+        .version-sidebar {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            max-height: 440px;
+            overflow-y: auto;
+        }
+
+        /* Clean, Non-Glitch Modrinth Style Item Nodes */
+        .version-item {
+            width: 100%;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            padding: 0.9rem 1.1rem;
+            text-align: left;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .version-item:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-primary);
+            transform: translateX(2px);
+        }
+
+        .version-item.active {
+            background-color: var(--accent-glow);
+            border-color: rgba(16, 185, 129, 0.2);
+            color: var(--text-primary);
+        }
+
+        .version-badge {
+            font-size: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-weight: 700;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .version-item.active .version-badge {
+            background-color: var(--accent);
+            color: #000000;
+        }
+
+        /* Display Panel Container */
+        .display-panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 2.5rem;
+            min-height: 340px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .panel-content-wrapper {
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .panel-content-wrapper.fade-out {
+            opacity: 0;
+            transform: translateY(2px);
+        }
+
+        .panel-header strong {
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .panel-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Features List Box */
+        .changelog-list {
+            list-style: none;
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.60rem;
+        }
+
+        .changelog-list li {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .changelog-list .bullet {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            background-color: var(--accent);
+            color: #050505;
+            text-decoration: none;
+            padding: 0.95rem 1.75rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+            width: max-content;
+        }
+
+        .btn-action:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-action:active { transform: translateY(0); }
+        .btn-action svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .display-panel.success-state { border-color: rgba(16, 185, 129, 0.4); }
+        .display-panel.success-state .panel-header strong { color: var(--accent); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .app-container { padding: 2.5rem 1rem; }
+            .version-sidebar { max-height: 200px; }
+            .display-panel { padding: 1.5rem; min-height: auto; }
+            .btn-action { width: 100%; }
+            .version-item:hover { transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <a href="index.html" class="back-link">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+                Back to overview
+            </a>
+            <h1>Versions</h1>
+            <p class="subtitle">Select an available environment release block to retrieve its deployment package.</p>
+        </header>
+
+        <main class="layout-grid">
+            <nav class="version-sidebar" id="sidebarContainer" aria-label="Version Selector">
+                </nav>
+
+            <section class="display-panel" id="manifestPanel">
+                <div class="panel-content-wrapper" id="panelContent">
+                    <div class="panel-header">
+                        <strong id="metaTitle">Release Profile</strong>
+                        <p id="metaDesc">Resolving structural file manifest indexes...</p>
+                        <ul class="changelog-list" id="changelogContainer"></ul>
+                    </div>
+                </div>
+                <a href="#" id="mrpackLink" class="btn-action" download>
+                    <svg id="btnIcon" viewBox="0 0 24 24">
+                        <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                    </svg>
+                    <span id="btnText">Download Release</span>
+                </a>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        'use strict';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const sidebar = document.getElementById('sidebarContainer');
+            const panel = document.getElementById('manifestPanel');
+            const panelContent = document.getElementById('panelContent');
+            const changelogContainer = document.getElementById('changelogContainer');
+            const mrpackAnchor = document.getElementById('mrpackLink');
+            const metaTitle = document.getElementById('metaTitle');
+            const metaDesc = document.getElementById('metaDesc');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+
+            let versionData = {};
+
+            const selectVersion = (versionElement, versionKey) => {
+                if (versionElement.classList.contains('active') && !panel.classList.contains('success-state')) return;
+
+                document.querySelectorAll('.version-item').forEach(el => el.classList.remove('active'));
+                versionElement.classList.add('active');
+
+                panel.classList.remove('success-state');
+                panelContent.classList.add('fade-out');
+
+                btnText.textContent = "Download Release";
+                btnIcon.innerHTML = `<path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>`;
+
+                // Clean content fade transition
+                setTimeout(() => {
+                    const manifest = versionData[versionKey];
+                    if (manifest) {
+                        metaTitle.textContent = `Minecraft Version ${versionKey}`;
+                        metaDesc.textContent = manifest.description || "No unique parameters designated for this target compilation.";
+                        mrpackAnchor.setAttribute('href', manifest.mrpack);
+
+                        changelogContainer.innerHTML = '';
+                        if (manifest.features && Array.isArray(manifest.features)) {
+                            manifest.features.forEach(feat => {
+                                const li = document.createElement('li');
+                                li.innerHTML = `<span class="bullet">•</span> <span>${feat}</span>`;
+                                changelogContainer.appendChild(li);
+                            });
+                        }
+                    }
+                    panelContent.classList.remove('fade-out');
+                }, 150);
+            };
+
+            mrpackAnchor.addEventListener('click', () => {
+                panel.classList.add('success-state');
+                metaTitle.textContent = "Thanks for downloading!";
+                metaDesc.textContent = "The file has been requested. To run this configuration profile, slide the compiled download right into your active instance dashboard inside Prism Launcher or the Modrinth Desktop Engine app.";
+                changelogContainer.innerHTML = '';
+                btnText.textContent = "Downloaded";
+                btnIcon.innerHTML = `<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>`;
+            });
+
+            try {
+                const response = await fetch('versions.json');
+                if (!response.ok) throw new Error('Dynamic target database resolve rejected.');
+
+                versionData = await response.json();
+                const versions = Object.keys(versionData);
+
+                const fragment = document.createDocumentFragment();
+                versions.forEach((version, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'version-item';
+                    btn.setAttribute('type', 'button');
+                    btn.innerHTML = `<span>${version}</span><span class="version-badge">Fabric</span>`;
+                    
+                    btn.addEventListener('click', () => selectVersion(btn, version));
+                    fragment.appendChild(btn);
+
+                    if (index === 0) {
+                        btn.classList.add('active');
+                        const manifest = versionData[version];
+                        metaTitle.textContent = `Minecraft Version ${version}`;
+                        metaDesc.textContent = manifest.description || "";
+                        mrpackAnchor.setAttribute('href', manifest.mrpack);
+                        if (manifest.features && Array.isArray(manifest.features)) {
+                            manifest.features.forEach(feat => {
+                                const li = document.createElement('li');
+                                li.innerHTML = `<span class="bullet">•</span> <span>${feat}</span>`;
+                                changelogContainer.appendChild(li);
+                            });
+                        }
+                    }
+                });
+
+                sidebar.appendChild(fragment);
+
+            } catch (error) {
+                console.error('Error handling async interface runtime sync layout:', error);
+                metaDesc.textContent = "Fatal exception mapping configuration variables.";
+            }
+        });
+    </script>
+</body>
+</html>

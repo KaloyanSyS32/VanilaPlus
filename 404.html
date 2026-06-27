@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Not Found</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d11;
+            --bg-secondary: #16161f;
+            --border-color: #22222e;
+            --text-primary: #ffffff;
+            --text-secondary: #9494a8;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 500px;
+            width: 100%;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .error-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: scaleUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .error-code {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.05em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            background-color: var(--accent);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.9rem 1.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 14px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+            width: 100%;
+        }
+
+        .btn-home:hover {
+            background-color: #2563eb;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+            transform: scale(1.01);
+        }
+
+        .btn-home:active {
+            transform: scale(0.99);
+        }
+
+        .btn-home svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.96) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <main class="error-card">
+            <div class="error-code">404</div>
+            <h1>Chunk Load Error</h1>
+            <p>The routing node or build destination profile you are trying to resolve cannot be found in the current index map.</p>
+            <a href="index.html" class="btn-home">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                Return to Overview
+            </a>
+        </main>
+    </div>
+</body>
+</html>
